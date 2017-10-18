@@ -63,6 +63,7 @@ public class PushbotTeleopTank_Iterative extends OpMode{
   	dcMotor front_right;
   	dcMotor back_left;
   	dcMotor back_right;
+  	Gyroscope gyro;
                                                          // could also use HardwarePushbotMatrix class.
     //double          clawOffset  = 0.0 ;                  // Servo mid position
     //final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo
@@ -70,6 +71,7 @@ public class PushbotTeleopTank_Iterative extends OpMode{
     /*
      * Code to run ONCE when the driver hits INIT
      */
+  	bool isBalancing = false;
     public void init() {
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -78,7 +80,7 @@ public class PushbotTeleopTank_Iterative extends OpMode{
       	front_right = hardwareMap.dcMotor.get("front_right");
       	back_left = hardwareMap.dcMotor.get("back_left");
       	back_right = hardwareMap.dcMotor.get("back_right");
-
+		gyro = hardwareMap.get(Gyroscope.class, "gyro");
         robot.init(hardwareMap);
 		
         // Send telemetry message to signify robot waiting;
@@ -110,7 +112,46 @@ public class PushbotTeleopTank_Iterative extends OpMode{
         //left = -gamepad1.left_stick_y;
         //right = -gamepad1.right_stick_y;
 
-		
+		if (isBalancing)
+        {
+        	int z = gyroscope.getAngularVelocity(AngleUnit.DEGREES).zRotationRate);
+          	int x = gyroscope.getAngularVelocity(AngleUnit.DEGREES).xRotationRate);
+          	if (z != 0)
+            {
+            	if (z > -1)
+                {
+               		front_right.setPower(-0.05);
+           			back_left.setPower(-0.05);
+                } else {
+                	front_right.setPower(0.05);
+                  	back_left.setPower(0.05)
+                }
+            } else {
+            	    front_right.setPower(0);
+                  	back_left.setPower(0)
+            }
+          	if (x != 0)
+            {
+            	if (x > -1)
+                {
+                	front_left.setPower(-0.05);
+                  	back_right.setPower(-0.05);
+                } else
+                {
+                	front_left.setPower(0.05);
+                  	back_right.setPower(0.05)
+                }
+            } else
+            {
+            	front_left.setPower(0);
+              	back_right.setPower(0);
+            }
+          	if (x == 0 && z == 0)
+            {
+            	isBalancing = false;
+              	telemetry.addData("Status:", "Balanced perfectly.");
+            }
+        }
       	
       
         //robot.leftDrive.setPower(left);

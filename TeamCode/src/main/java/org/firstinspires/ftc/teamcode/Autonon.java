@@ -114,8 +114,8 @@ public class PushbotTeleopTank_Iterative extends OpMode{
 
 		if (isBalancing)
         {
-        	int z = gyroscope.getAngularVelocity(AngleUnit.DEGREES).zRotationRate);
-          	int x = gyroscope.getAngularVelocity(AngleUnit.DEGREES).xRotationRate);
+        	int z = gyro.getAngularVelocity(AngleUnit.DEGREES).zRotationRate);
+          	int x = gyro.getAngularVelocity(AngleUnit.DEGREES).xRotationRate);
           	if (z != 0)
             {
             	if (z > -1)

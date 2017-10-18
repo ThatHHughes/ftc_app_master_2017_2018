@@ -150,6 +150,7 @@ public class PushbotTeleopTank_Iterative extends OpMode{
             sleep(s*1000);
             robot.back_left.setPower(0);
             robot.front_right.setPower(0);
+          	return;
             
         } else if (direction == "s_right")
         {
@@ -158,6 +159,7 @@ public class PushbotTeleopTank_Iterative extends OpMode{
             sleep(s*1000);
             robot.back_left.setPower(0);
             robot.front_right.setPower(0);
+         	return;
           
         } else if (direction == "for")
         {
@@ -166,6 +168,7 @@ public class PushbotTeleopTank_Iterative extends OpMode{
             sleep(s*1000);
             robot.back_right.setPower(0);
             robot.front_left.setPower(0);
+          	return;
         } else if (direction == "back")
         {
             percentS = percentS - percentS*2;
@@ -174,6 +177,7 @@ public class PushbotTeleopTank_Iterative extends OpMode{
             sleep(s*1000);
             robot.back_right.setPower(0);
             robot.front_left.setPower(0);
+          	return;
         }
             
         

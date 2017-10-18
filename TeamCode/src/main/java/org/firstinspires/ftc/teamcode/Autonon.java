@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
@@ -58,7 +59,10 @@ public class PushbotTeleopTank_Iterative extends OpMode{
 
     /* Declare OpMode members. */
     HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
-  	
+  	dcMotor front_left;
+  	dcMotor front_right;
+  	dcMotor back_left;
+  	dcMotor back_right;
                                                          // could also use HardwarePushbotMatrix class.
     //double          clawOffset  = 0.0 ;                  // Servo mid position
     //final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo
@@ -70,6 +74,11 @@ public class PushbotTeleopTank_Iterative extends OpMode{
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
+      	front_left = hardwareMap.dcMotor.get("front_left");
+      	front_right = hardwareMap.dcMotor.get("front_right");
+      	back_left = hardwareMap.dcMotor.get("back_left");
+      	back_right = hardwareMap.dcMotor.get("back_right");
+
         robot.init(hardwareMap);
 		
         // Send telemetry message to signify robot waiting;
@@ -145,38 +154,38 @@ public class PushbotTeleopTank_Iterative extends OpMode{
       	if (direction == "s_left)
         {
             percentS = percentS - percentS*2;
-            robot.front_right.setPower(percentS);
-            robot.back_left.setPower(percentS);
+            front_right.setPower(percentS);
+            back_left.setPower(percentS);
             sleep(s*1000);
-            robot.back_left.setPower(0);
-            robot.front_right.setPower(0);
+            back_left.setPower(0);
+            front_right.setPower(0);
           	return;
             
         } else if (direction == "s_right")
         {
-            robot.front_right.setPower(percentS);
-            robot.back_left.setPower(percentS);
+            front_right.setPower(percentS);
+            back_left.setPower(percentS);
             sleep(s*1000);
-            robot.back_left.setPower(0);
-            robot.front_right.setPower(0);
+            back_left.setPower(0);
+            front_right.setPower(0);
          	return;
           
         } else if (direction == "for")
         {
-            robot.front_left.setPower(percentS);
-            robot.back_right.setPower(percentS)'
+            front_left.setPower(percentS);
+            back_right.setPower(percentS)'
             sleep(s*1000);
-            robot.back_right.setPower(0);
-            robot.front_left.setPower(0);
+            back_right.setPower(0);
+            front_left.setPower(0);
           	return;
         } else if (direction == "back")
         {
             percentS = percentS - percentS*2;
-            robot.front_left.setPower(percentS);
-            robot.back_right.setPower(percentS)'
+            front_left.setPower(percentS);
+            back_right.setPower(percentS)'
             sleep(s*1000);
-            robot.back_right.setPower(0);
-            robot.front_left.setPower(0);
+            back_right.setPower(0);
+            front_left.setPower(0);
           	return;
         }
             

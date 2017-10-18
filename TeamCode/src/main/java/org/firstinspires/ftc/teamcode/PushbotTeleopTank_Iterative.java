@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
@@ -56,6 +57,10 @@ public class PushbotTeleopTank_Iterative extends OpMode{
 
     /* Declare OpMode members. */
     HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
+  	dcMotor front_left;
+  	dcMotor front_right;
+  	dcMotor back_left;
+  	dcMotor back_right;
                                                          // could also use HardwarePushbotMatrix class.
     //double          clawOffset  = 0.0 ;                  // Servo mid position
     //final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo
@@ -67,8 +72,13 @@ public class PushbotTeleopTank_Iterative extends OpMode{
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
+      
         robot.init(hardwareMap);
-
+		front_left = hardwareMap.dcMotor.get("front_left");
+      	front_right = hardwareMap.dcMotor.get("front_right");
+      	back_left = hardwareMap.dcMotor.get("back_left");
+      	back_right = hardwareMap.dcMotor.get("back_right");
+        telemetry.addData("Status:", "hwMap is good.")
         // Send telemetry message to signify robot waiting;
      //   telemetry.addData("Say", "Hello Driver");    //
     }
@@ -84,6 +94,7 @@ public class PushbotTeleopTank_Iterative extends OpMode{
      * Code to run ONCE when the driver hits PLAY
      */
     public void start() {
+      telemetry.addData("Status:", "Started.")
     }
 
     /*
@@ -98,24 +109,24 @@ public class PushbotTeleopTank_Iterative extends OpMode{
         //left = -gamepad1.left_stick_y;
         //right = -gamepad1.right_stick_y;
 
-      	robot.front_left.setPower(-gamepad1.left_stick_y);
-      	robot.front_right.setPower(-gamepad1.left_stick_x);
-      	robot.back_left.setPower(-gamepad1.right_stick_x);
-      	robot.back_right.setPower(-gamepad1.right_stick_y);
+      	front_left.setPower(-gamepad1.left_stick_y);
+      	front_right.setPower(-gamepad1.left_stick_x);
+      	back_left.setPower(-gamepad1.right_stick_x);
+      	back_right.setPower(-gamepad1.right_stick_y);
       	
       	if (gamepad1.a)
         {
-        	robot.front_left.setPower(0);
-      		robot.front_right.setPower(0);
-      		robot.back_left.setPower(0);
-      		robot.back_right.setPower(0);
+        	front_left.setPower(0);
+      		front_right.setPower(0);
+      		back_left.setPower(0);
+      		back_right.setPower(0);
         }
       	if (gamepad2.right_bumper)
         {
-        	robot.front_left.setPower(0);
-      		robot.front_right.setPower(0);
-      		robot.back_left.setPower(0);
-      		robot.back_right.setPower(0);
+        	front_left.setPower(0);
+      		front_right.setPower(0);
+      		back_left.setPower(0);
+      		back_right.setPower(0);
         }
       	
       
@@ -151,5 +162,6 @@ public class PushbotTeleopTank_Iterative extends OpMode{
      */
     @Override
     public void stop() {
+      telemetry.addData("Status:", "Stopped.")
     }
 }

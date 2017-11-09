@@ -50,7 +50,7 @@ import org.firstinspires.ftc.teamcode.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="DankBot v0.75", group="Pushbot")
+@TeleOp(name="Teleop v0.8", group="Pushbot")
 public class PushbotTeleopTank_Iterative extends OpMode{
 
     /* Declare OpMode members. */

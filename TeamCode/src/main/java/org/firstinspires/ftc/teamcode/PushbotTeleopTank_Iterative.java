@@ -29,15 +29,13 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
-
+import org.firstinspires.ftc.teamcode.HardwarePushbot;
 /**
+ *
  * This file provides basic Telop driving for a Pushbot robot.
  * The code is structured as an Iterative OpMode
  *
@@ -52,109 +50,70 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="DankBot v0.1", group="Pushbot")
+@TeleOp(name="DankBot v0.75", group="Pushbot")
 public class PushbotTeleopTank_Iterative extends OpMode{
 
     /* Declare OpMode members. */
     HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
-  	dcMotor front_left;
-  	dcMotor front_right;
-  	dcMotor back_left;
-  	dcMotor back_right;
-                                                         // could also use HardwarePushbotMatrix class.
-    //double          clawOffset  = 0.0 ;                  // Servo mid position
-    //final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo
+  	DcMotor front_left;
+  	DcMotor front_right;
+  	DcMotor back_left;
+  	DcMotor back_right;
 
-    /*
-     * Code to run ONCE when the driver hits INIT
-     */
     public void init() {
-        /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
-         */
+
       
         robot.init(hardwareMap);
 		front_left = hardwareMap.dcMotor.get("front_left");
       	front_right = hardwareMap.dcMotor.get("front_right");
       	back_left = hardwareMap.dcMotor.get("back_left");
       	back_right = hardwareMap.dcMotor.get("back_right");
-        telemetry.addData("Status:", "hwMap is good.")
-        // Send telemetry message to signify robot waiting;
-     //   telemetry.addData("Say", "Hello Driver");    //
+        telemetry.addData("Status:", "hwMap is good.");
+
     }
 
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
+
 
     public void init_loop() {
     }
 
-    /*
-     * Code to run ONCE when the driver hits PLAY
-     */
+
     public void start() {
-      telemetry.addData("Status:", "Started.")
+
+        telemetry.addData("Status:", "Started.");
+        front_left.setPower(0);
+        front_right.setPower(0);
+        back_left.setPower(0);
+        back_right.setPower(0);
     }
 
-    /*
-     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
-     */
+
 
     public void loop() {
-        //double left;
-        //double right;
 
-        // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
-        //left = -gamepad1.left_stick_y;
-        //right = -gamepad1.right_stick_y;
-
-      	front_left.setPower(-gamepad1.left_stick_y);
-      	front_right.setPower(-gamepad1.left_stick_x);
-      	back_left.setPower(-gamepad1.right_stick_x);
-      	back_right.setPower(-gamepad1.right_stick_y);
-      	
-      	if (gamepad1.a)
+      	front_left.setPower(-gamepad1.right_stick_y);
+      	front_right.setPower(-gamepad1.right_stick_x);
+      	back_left.setPower(-gamepad1.left_stick_x);
+      	back_right.setPower(-gamepad1.left_stick_y);
+      	if (gamepad1.dpad_up)
         {
-        	front_left.setPower(0);
-      		front_right.setPower(0);
-      		back_left.setPower(0);
-      		back_right.setPower(0);
+            front_left.setPower(1);
+
         }
-      	if (gamepad2.right_bumper)
+        if (gamepad1.dpad_right)
         {
-        	front_left.setPower(0);
-      		front_right.setPower(0);
-      		back_left.setPower(0);
-      		back_right.setPower(0);
+            front_right.setPower(1);
         }
-      	
-      
-        //robot.leftDrive.setPower(left);
-        //robot.rightDrive.setPower(right);
-        // Use gamepad left & right Bumpers to open and close the claw
-        //if (gamepad1.right_bumper)
-          //  clawOffset += CLAW_SPEED;
-        //else if (gamepad1.left_bumper)
-          //  clawOffset -= CLAW_SPEED;
+        if (gamepad1.dpad_down)
+        {
 
-        // Move both servos to new position.  Assume servos are mirror image of each other.
-        //clawOffset = Range.clip(clawOffset, -0.5, 0.5);
-        //robot.leftClaw.setPosition(robot.MID_SERVO + clawOffset);
-        //robot.rightClaw.setPosition(robot.MID_SERVO - clawOffset);
+            back_right.setPower(1);
+        }
+        if (gamepad1.dpad_left)
+        {
+         back_left.setPower(1);
+        }
 
-        // Use gamepad buttons to move the arm up (Y) and down (A)
-        //if (gamepad1.y)
-          //  robot.leftArm.setPower(robot.ARM_UP_POWER);
-        //else if (gamepad1.a)
-        //  /  robot.leftArm.setPower(robot.ARM_DOWN_POWER);
-        //else
-          //  robot.leftArm.setPower(0.0);
-
-        // Send telemetry message to signify robot running;
-        //telemetry.addData("claw",  "Offset = %.2f", clawOffset);
-        //telemetry.addData("left",  "%.2f", left);
-        //telemetry.addData("right", "%.2f", right);
     }
 
     /*
@@ -162,6 +121,6 @@ public class PushbotTeleopTank_Iterative extends OpMode{
      */
     @Override
     public void stop() {
-      telemetry.addData("Status:", "Stopped.")
+      telemetry.addData("Status:", "Stopped.");
     }
 }

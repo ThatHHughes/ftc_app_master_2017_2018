@@ -50,7 +50,7 @@ import org.firstinspires.ftc.teamcode.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Teleop v0.8", group="Pushbot")
+@TeleOp(name="Teleop v0.9", group="Pushbot")
 public class PushbotTeleopTank_Iterative extends OpMode{
 
     /* Declare OpMode members. */
@@ -60,6 +60,8 @@ public class PushbotTeleopTank_Iterative extends OpMode{
   	DcMotor back_left;
   	DcMotor back_right;
 
+    double maxSpeed = 0.5;
+
     public void init() {
 
       
@@ -68,6 +70,8 @@ public class PushbotTeleopTank_Iterative extends OpMode{
       	front_right = hardwareMap.dcMotor.get("front_right");
       	back_left = hardwareMap.dcMotor.get("back_left");
       	back_right = hardwareMap.dcMotor.get("back_right");
+//        test_1 = hardwareMap.dcMotor.get("test_1");
+//        test_2 = hardwareMap.dcMotor.get("test_2");
         telemetry.addData("Status:", "hwMap is good.");
 
     }
@@ -91,28 +95,78 @@ public class PushbotTeleopTank_Iterative extends OpMode{
 
     public void loop() {
 
-      	front_left.setPower(-gamepad1.right_stick_y);
-      	front_right.setPower(-gamepad1.right_stick_x);
-      	back_left.setPower(-gamepad1.left_stick_x);
-      	back_right.setPower(-gamepad1.left_stick_y);
-      	if (gamepad1.dpad_up)
-        {
-            front_left.setPower(1);
+//      	front_left.setPower(-gamepad1.right_stick_y*maxSpeed);
+//      	front_right.setPower(-gamepad1.right_stick_x*maxSpeed);
+//      	back_right.setPower(-gamepad1.left_stick_x*maxSpeed);
+//      	back_left.setPower(-gamepad1.left_stick_y*maxSpeed);
 
-        }
-        if (gamepad1.dpad_right)
-        {
-            front_right.setPower(1);
-        }
-        if (gamepad1.dpad_down)
-        {
+        double yspeed = gamepad1.left_stick_y;
+        telemetry.addData("YSpeed: ", yspeed);
+        double xspeed = gamepad1.left_stick_x;
+        telemetry.addData("XSpeed: ", xspeed);
+        double turnspeed = gamepad1.right_stick_x;
 
-            back_right.setPower(1);
-        }
-        if (gamepad1.dpad_left)
+        if (gamepad1.left_stick_y > 0)
         {
-         back_left.setPower(1);
+            front_left.setPower(-yspeed*maxSpeed);
+            back_left.setPower(yspeed*maxSpeed);
         }
+        else if (gamepad1.left_stick_y < 0)
+        {
+            front_left.setPower(-yspeed*maxSpeed);
+            back_left.setPower(yspeed*maxSpeed);
+        }
+        else if (gamepad1.left_stick_x > 0)
+        {
+            back_right.setPower(-xspeed*maxSpeed);
+            front_right.setPower(xspeed*maxSpeed);
+        }
+        else if (gamepad1.left_stick_x < 0)
+        {
+            back_right.setPower(-xspeed*maxSpeed);
+            front_right.setPower(xspeed*maxSpeed);
+        }
+        else if (gamepad1.right_stick_x < 0)
+        {
+            front_left.setPower(turnspeed*maxSpeed);
+            back_left.setPower(turnspeed*maxSpeed);
+            back_right.setPower(turnspeed*maxSpeed);
+            front_right.setPower(turnspeed*maxSpeed);
+        }
+        else if (gamepad1.right_stick_x > 0)
+        {
+            front_left.setPower(turnspeed*maxSpeed);
+            back_left.setPower(turnspeed*maxSpeed);
+            back_right.setPower(turnspeed*maxSpeed);
+            front_right.setPower(turnspeed*maxSpeed);
+        }
+        else {
+            front_left.setPower(0);
+            front_right.setPower(0);
+            back_left.setPower(0);
+            back_right.setPower(0);
+        }
+
+//        if (gamepad1.left_stick_y > 0)
+//        {
+//            front_left.setPower(gamepad1.left_stick_y);
+//
+//        }
+//        if (gamepad1.left_stick_y < 0)
+//        {
+//            front_right.setPower(gamepad1.left_stick_y);
+//
+//        }
+//        if (gamepad1.left_stick_x > 0)
+//        {
+//
+//            back_right.setPower(gamepad1.left_stick_x);
+//        }
+//        if (gamepad1.left_stick_x < 0)
+//        {
+//
+//            back_left.setPower(gamepad1.left_stick_x);
+//        }
 
     }
 

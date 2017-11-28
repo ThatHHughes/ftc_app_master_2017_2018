@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.HardwarePushbot;
 /**
@@ -59,6 +60,9 @@ public class PushbotTeleopTank_Iterative extends OpMode{
   	DcMotor front_right;
   	DcMotor back_left;
   	DcMotor back_right;
+    DcMotor arm;
+    Servo arm_1;
+    Servo arm_2;
 
     double maxSpeed = 0.5;
 
@@ -106,6 +110,8 @@ public class PushbotTeleopTank_Iterative extends OpMode{
         telemetry.addData("XSpeed: ", xspeed);
         double turnspeed = gamepad1.right_stick_x;
 
+
+
         if (gamepad1.left_stick_y > 0)
         {
             front_left.setPower(-yspeed*maxSpeed);
@@ -135,10 +141,10 @@ public class PushbotTeleopTank_Iterative extends OpMode{
         }
         else if (gamepad1.right_stick_x > 0)
         {
-            front_left.setPower(turnspeed*maxSpeed);
-            back_left.setPower(turnspeed*maxSpeed);
-            back_right.setPower(turnspeed*maxSpeed);
-            front_right.setPower(turnspeed*maxSpeed);
+            front_left.setPower(-turnspeed*maxSpeed);
+            back_left.setPower(-turnspeed*maxSpeed);
+            back_right.setPower(-turnspeed*maxSpeed);
+            front_right.setPower(-turnspeed*maxSpeed);
         }
         else {
             front_left.setPower(0);
@@ -169,6 +175,7 @@ public class PushbotTeleopTank_Iterative extends OpMode{
 //        }
 
     }
+
 
     /*
      * Code to run ONCE after the driver hits STOP

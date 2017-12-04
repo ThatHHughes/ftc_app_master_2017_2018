@@ -99,52 +99,49 @@ public class PushbotTeleopTank_Iterative extends OpMode{
 
     public void loop() {
 
-//      	front_left.setPower(-gamepad1.right_stick_y*maxSpeed);
-//      	front_right.setPower(-gamepad1.right_stick_x*maxSpeed);
-//      	back_right.setPower(-gamepad1.left_stick_x*maxSpeed);
-//      	back_left.setPower(-gamepad1.left_stick_y*maxSpeed);
+        double speed = 0.5;
 
-        double yspeed = gamepad1.left_stick_y;
-        telemetry.addData("YSpeed: ", yspeed);
-        double xspeed = gamepad1.left_stick_x;
-        telemetry.addData("XSpeed: ", xspeed);
-        double turnspeed = gamepad1.right_stick_x;
+        // Order of wheel params: back left, back right, front left, front right
+        // To go forward: (bl- br0 fl+ fr0)
+        // To go backward: (bl+ br0 fl- fr0)
+        // To go right: (bl0 br- fl0 fr+)
+        // To go left: (bl0 br+ fl0 fr-)
+        // To turn left: (bl- br- fl- fr-)
+        // To turn right: (bl+ br+ fl+ fr+)
 
-
-
-        if (gamepad1.left_stick_y > 0)
+        if (gamepad1.dpad_down)
         {
-            front_left.setPower(-yspeed*maxSpeed);
-            back_left.setPower(yspeed*maxSpeed);
+            front_left.setPower(speed);
+            back_left.setPower(-speed);
         }
-        else if (gamepad1.left_stick_y < 0)
+        else if (gamepad1.dpad_up)
         {
-            front_left.setPower(-yspeed*maxSpeed);
-            back_left.setPower(yspeed*maxSpeed);
+            front_left.setPower(-speed);
+            back_left.setPower(speed);
         }
-        else if (gamepad1.left_stick_x > 0)
+        else if (gamepad1.dpad_right)
         {
-            back_right.setPower(-xspeed*maxSpeed);
-            front_right.setPower(xspeed*maxSpeed);
+            back_right.setPower(speed);
+            front_right.setPower(-speed);
         }
-        else if (gamepad1.left_stick_x < 0)
+        else if (gamepad1.dpad_left)
         {
-            back_right.setPower(-xspeed*maxSpeed);
-            front_right.setPower(xspeed*maxSpeed);
+            back_right.setPower(-speed);
+            front_right.setPower(speed);
         }
         else if (gamepad1.right_stick_x < 0)
         {
-            front_left.setPower(turnspeed*maxSpeed);
-            back_left.setPower(turnspeed*maxSpeed);
-            back_right.setPower(turnspeed*maxSpeed);
-            front_right.setPower(turnspeed*maxSpeed);
+            front_left.setPower(speed);
+            back_left.setPower(speed);
+            back_right.setPower(speed);
+            front_right.setPower(speed);
         }
         else if (gamepad1.right_stick_x > 0)
         {
-            front_left.setPower(-turnspeed*maxSpeed);
-            back_left.setPower(-turnspeed*maxSpeed);
-            back_right.setPower(-turnspeed*maxSpeed);
-            front_right.setPower(-turnspeed*maxSpeed);
+            front_left.setPower(-speed);
+            back_left.setPower(-speed);
+            back_right.setPower(-speed);
+            front_right.setPower(-speed);
         }
         else {
             front_left.setPower(0);
@@ -152,27 +149,6 @@ public class PushbotTeleopTank_Iterative extends OpMode{
             back_left.setPower(0);
             back_right.setPower(0);
         }
-
-//        if (gamepad1.left_stick_y > 0)
-//        {
-//            front_left.setPower(gamepad1.left_stick_y);
-//
-//        }
-//        if (gamepad1.left_stick_y < 0)
-//        {
-//            front_right.setPower(gamepad1.left_stick_y);
-//
-//        }
-//        if (gamepad1.left_stick_x > 0)
-//        {
-//
-//            back_right.setPower(gamepad1.left_stick_x);
-//        }
-//        if (gamepad1.left_stick_x < 0)
-//        {
-//
-//            back_left.setPower(gamepad1.left_stick_x);
-//        }
 
     }
 

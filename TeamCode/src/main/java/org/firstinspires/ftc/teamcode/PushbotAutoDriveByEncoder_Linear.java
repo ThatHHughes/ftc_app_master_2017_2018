@@ -45,15 +45,6 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * The code REQUIRES that you DO have encoders on the wheels,
  *   otherwise you would use: PushbotAutoDriveByTime;
  *
- *  This code ALSO requires that the drive Motors have been configured such that a positive
- *  power command moves them forwards, and causes the encoders to count UP.
- *
- *   The desired path in this example is:
- *   - Drive forward for 48 inches
- *   - Spin right for 12 Inches
- *   - Drive Backwards for 24 inches
- *   - Stop and close the claw.
- *
  *  The code is written using a method called: encoderDrive(speed, leftInches, rightInches, timeoutS)
  *  that performs the actual movement.
  *  This methods assumes that each movement is relative to the last stopping place.
@@ -65,7 +56,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
-@Disabled
+
 public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -76,13 +67,15 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
     DcMotor back_right;
     private ElapsedTime     runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    static final double     COUNTS_PER_MOTOR_REV    = 1514 ;    // eg: MATRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
+    static final double     WHEEL_DIAMETER_INCHES   = 3.56 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
+
+    int i = 0;
 
     @Override
     public void runOpMode() {
@@ -123,13 +116,28 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+
+        // Order of wheel params: back left, back right, front left, front right
+        // To go forward: (bl- br0 fl+ fr0)
+        // To go backward: (bl+ br0 fl- fr0)
+        // To go right: (bl0 br- fl0 fr+)
+        // To go left: (bl0 br+ fl0 fr-)
+        // To turn left: (bl- br- fl- fr-)
+        // To turn right: (bl+ br+ fl+ fr+)
+
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-        encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-        encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+        telemetry.addData("Path 1 Running", "");
+        encoderDrive(DRIVE_SPEED,  10,  10, -10, -10, 1000);  // S1: Forward 47 Inches with 5 Sec timeout
+//        telemetry.addData("Path 1 ", "Complete");
+//        telemetry.addData("Path 2 Running", "");
+//        encoderDrive(TURN_SPEED,   -12, -12, -12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
+//        telemetry.addData("Path 2 ", "Complete");
+//        telemetry.addData("Path 3 Running", "");
+//        encoderDrive(DRIVE_SPEED, 0, 10, 0, -10, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+//        telemetry.addData("Path 3 ", "Complete");
 
-        sleep(1000);     // pause for servos to move
+        sleep(10000);     // pause for servos to move
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -144,23 +152,29 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
      *  3) Driver stops the opmode running.
      */
     public void encoderDrive(double speed,
-                             double leftInches, double rightInches,
+                             double backLeftInches, double backRightInches, double frontLeftInches, double frontRightInches,
                              double timeoutS) {
-        int newLeftTarget;
-        int newRightTarget;
+        int newLeftBackTarget;
+        int newLeftFrontTarget;
+        int newRightBackTarget;
+        int newRightFrontTarget;
+
+        i+=1;
+
+
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = back_left.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = back_right.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            newLeftTarget = front_left.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = front_right.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            back_left.setTargetPosition(newLeftTarget);
-            back_right.setTargetPosition(newRightTarget);
-            front_left.setTargetPosition(newLeftTarget);
-            front_right.setTargetPosition(newRightTarget);
+            newLeftBackTarget = back_left.getCurrentPosition() + (int)(backLeftInches * COUNTS_PER_INCH);
+            newRightBackTarget = back_right.getCurrentPosition() + (int)(backRightInches * COUNTS_PER_INCH);
+            newLeftFrontTarget = front_left.getCurrentPosition() + (int)(frontLeftInches * COUNTS_PER_INCH);
+            newRightFrontTarget = front_right.getCurrentPosition() + (int)(frontRightInches * COUNTS_PER_INCH);
+            back_left.setTargetPosition(newLeftBackTarget);
+            back_right.setTargetPosition(newRightBackTarget);
+            front_left.setTargetPosition(newLeftFrontTarget);
+            front_right.setTargetPosition(newRightFrontTarget);
 
             // Turn On RUN_TO_POSITION
             back_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -186,13 +200,13 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
                    (front_left.isBusy() && front_right.isBusy() && back_right.isBusy() && back_right.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",
-                                            back_right.getCurrentPosition(),
-                                            back_left.getCurrentPosition(),
-                                            front_right.getCurrentPosition(),
-                                            front_left.getCurrentPosition());
-                telemetry.update();
+//                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftBackTarget,  newRightBackTarget);
+//                telemetry.addData("Path2",  "Running at %7d :%7d",
+//                                            back_right.getCurrentPosition(),
+//                                            back_left.getCurrentPosition(),
+//                                            front_right.getCurrentPosition(),
+//                                            front_left.getCurrentPosition());
+//                telemetry.update();
             }
 
             // Stop all motion;

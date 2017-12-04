@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ThreadPool;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -68,7 +69,7 @@ public class Autonon extends OpMode{
   	DcMotor back_left;
   	DcMotor back_right;
   	Gyroscope gyro;
-                                                         // could also use HardwarePushbotMatrix class.
+    ColorSensor los_colores;                                                     // could also use HardwarePushbotMatrix class.
     //double          clawOffset  = 0.0 ;                  // Servo mid position
     //final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo
 
@@ -86,7 +87,7 @@ public class Autonon extends OpMode{
       	back_right = hardwareMap.dcMotor.get("back_right");
 		gyro = hardwareMap.get(Gyroscope.class, "gyro");
         robot.init(hardwareMap);
-
+        los_colores = hardwareMap.colorSensor.get("colorSensor");
         // Send telemetry message to signify robot waiting;
      //   telemetry.addData("Say", "Hello Driver");    //
     }
@@ -108,6 +109,9 @@ public class Autonon extends OpMode{
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
 	private double bot_ips = 23.4;
+    enum Alliance {Red, Blue};
+    Alliance Us = Alliance.Blue;
+    private boolean isColor;
     public void loop() {
         //double left;
         //double right;
@@ -115,7 +119,36 @@ public class Autonon extends OpMode{
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         //left = -gamepad1.left_stick_y;
         //right = -gamepad1.right_stick_y;
+        if (isColor)
+        {
+            //Move to the right
+            if (los_colores.red() > los_colores.blue())
+            {
+                if (Us == Alliance.Red)
+                {
+                    //RotateRight, and moving forward a tiny bit.
+                    isColor = false;
+                }else
+                {
+                    //RotateLeft, and moving forward a tiny bit
+                    isColor = false;
+                }
 
+            }
+            if (los_colores.red() < los_colores.blue())
+            {
+                if (Us == Alliance.Blue)
+                {
+                    //RotateRight, and moving forward a tiny bit.
+                    isColor = false;
+                }else
+                {
+                    //RotateLeft, and moving forward a tiny bit
+                    isColor = false;
+                }
+
+            }
+        }
 		if (isBalancing)
         {
 

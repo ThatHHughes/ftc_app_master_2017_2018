@@ -30,12 +30,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -55,12 +52,12 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
+@Autonomous(name="Pushbot: Auto Drive By Encoder Red", group="Pushbot")
 
-public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
+public class PushbotAutoDriveByEncoder_Linear_Red extends LinearOpMode {
 
     /* Declare OpMode members. */
-    org.firstinspires.ftc.teamcode.HardwarePushbot robot       = new org.firstinspires.ftc.teamcode.HardwarePushbot(); // use the class created to define a Pushbot's hardware
+    HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
     DcMotor front_left;
     DcMotor front_right;
     DcMotor back_left;
@@ -124,11 +121,14 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
         // To go left: (bl0 br+ fl0 fr-)
         // To turn left: (bl- br- fl- fr-)
         // To turn right: (bl+ br+ fl+ fr+)
+        // Direction Options: forward, backward, left, right, turn
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         telemetry.addData("Path 1 Running", "");
-        encoderDrive(DRIVE_SPEED,  10,  10, -10, -10, 1000);  // S1: Forward 47 Inches with 5 Sec timeout
+          encoderDrive(DRIVE_SPEED,  60,  -60, -60, 60, 1000, "right");  // S1: Forward 47 Inches with 5 Sec timeout
+          encoderDrive(DRIVE_SPEED,  12,  12, -12, -12, 1000, "backward");
+//  encoderDrive(DRIVE_SPEED, 0, 15, 0, 15, 1000);
 //        telemetry.addData("Path 1 ", "Complete");
 //        telemetry.addData("Path 2 Running", "");
 //        encoderDrive(TURN_SPEED,   -12, -12, -12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
@@ -152,14 +152,12 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
      *  3) Driver stops the opmode running.
      */
     public void encoderDrive(double speed,
-                             double backLeftInches, double backRightInches, double frontLeftInches, double frontRightInches,
-                             double timeoutS) {
+                             double backLeftInches, double backRightInches, double frontLeftInches,
+                             double frontRightInches, double timeoutS, String direction) {
         int newLeftBackTarget;
         int newLeftFrontTarget;
         int newRightBackTarget;
         int newRightFrontTarget;
-
-        i+=1;
 
 
 
@@ -171,23 +169,39 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
             newRightBackTarget = back_right.getCurrentPosition() + (int)(backRightInches * COUNTS_PER_INCH);
             newLeftFrontTarget = front_left.getCurrentPosition() + (int)(frontLeftInches * COUNTS_PER_INCH);
             newRightFrontTarget = front_right.getCurrentPosition() + (int)(frontRightInches * COUNTS_PER_INCH);
+
             back_left.setTargetPosition(newLeftBackTarget);
             back_right.setTargetPosition(newRightBackTarget);
             front_left.setTargetPosition(newLeftFrontTarget);
             front_right.setTargetPosition(newRightFrontTarget);
 
-            // Turn On RUN_TO_POSITION
-            back_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if (direction == "forward" || direction == "backward") {
+                back_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+                back_left.setPower(Math.abs(speed));
+                front_left.setPower(Math.abs(speed));
+            }
+            else if (direction == "left" || direction == "right") {
+                back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                back_right.setPower(Math.abs(speed));
+                front_right.setPower(Math.abs(speed));
+            }
+            else if (direction == "turn") {
+                back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                back_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                back_right.setPower(Math.abs(speed));
+                front_right.setPower(Math.abs(speed));
+                back_left.setPower(Math.abs(speed));
+                front_left.setPower(Math.abs(speed));
+            }
             // reset the timeout time and start motion.
             runtime.reset();
-            back_right.setPower(Math.abs(speed));
-            back_left.setPower(Math.abs(speed));
-            front_right.setPower(Math.abs(speed));
-            front_left.setPower(Math.abs(speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
@@ -197,7 +211,7 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                    (runtime.seconds() < timeoutS) &&
-                   (front_left.isBusy() && front_right.isBusy() && back_right.isBusy() && back_right.isBusy())) {
+                   (front_left.isBusy() && front_right.isBusy() && back_right.isBusy() && back_left.isBusy())) {
 
                 // Display it for the driver.
 //                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftBackTarget,  newRightBackTarget);

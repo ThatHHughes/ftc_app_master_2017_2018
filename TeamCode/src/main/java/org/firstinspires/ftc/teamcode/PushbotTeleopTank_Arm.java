@@ -34,7 +34,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.HardwarePushbot;
 /**
  *
  * This file provides basic Telop driving for a Pushbot robot.
@@ -51,8 +50,8 @@ import org.firstinspires.ftc.teamcode.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Teleop v0.9", group="Pushbot")
-public class PushbotTeleopTank_Iterative extends OpMode{
+@TeleOp(name="Arm v1.0", group="Pushbot")
+public class PushbotTeleopTank_Arm extends OpMode{
 
     /* Declare OpMode members. */
     HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
@@ -60,15 +59,11 @@ public class PushbotTeleopTank_Iterative extends OpMode{
   	DcMotor front_right;
   	DcMotor back_left;
   	DcMotor back_right;
-
+    DcMotor arm;
     DcMotor base_motor;
     //DcMotor turn_motor;
     Servo turn_servo;
     Servo claw_servo;
-
-    DcMotor arm;
-    Servo arm_1;
-    Servo arm_2;
 
     double maxSpeed = 0.5;
 
@@ -76,13 +71,14 @@ public class PushbotTeleopTank_Iterative extends OpMode{
 
       
         robot.init(hardwareMap);
+//        claw_servo = hardwareMap.servo.get("claw_servo");
 		front_left = hardwareMap.dcMotor.get("front_left");
       	front_right = hardwareMap.dcMotor.get("front_right");
       	back_left = hardwareMap.dcMotor.get("back_left");
       	back_right = hardwareMap.dcMotor.get("back_right");
         base_motor = hardwareMap.dcMotor.get("base_motor");
         turn_servo = hardwareMap.servo.get("turn_servo");
-        claw_servo = hardwareMap.servo.get("claw_servo");
+        //turn_motor = hardwareMap.dcMotor.get("turn_motor");
 //        test_1 = hardwareMap.dcMotor.get("test_1");
 //        test_2 = hardwareMap.dcMotor.get("test_2");
         telemetry.addData("Status:", "hwMap is good.");
@@ -102,7 +98,6 @@ public class PushbotTeleopTank_Iterative extends OpMode{
         front_right.setPower(0);
         back_left.setPower(0);
         back_right.setPower(0);
-        base_motor.setPower(0);
     }
 
 
@@ -119,76 +114,65 @@ public class PushbotTeleopTank_Iterative extends OpMode{
         // To turn left: (bl- br- fl- fr-)
         // To turn right: (bl+ br+ fl+ fr+)
 
-        if (gamepad1.dpad_down)
+        if (gamepad2.dpad_down)
         {
-            front_left.setPower(speed);
-            back_left.setPower(-speed);
+            base_motor.setPower(-0.4);
         }
-        else if (gamepad1.dpad_up)
+        else if (gamepad2.dpad_up)
         {
-            front_left.setPower(-speed);
-            back_left.setPower(speed);
+            base_motor.setPower(0.4);
         }
-        else if (gamepad1.dpad_right)
-        {
-            back_right.setPower(speed);
-            front_right.setPower(-speed);
-        }
-        else if (gamepad1.dpad_left)
-        {
-            back_right.setPower(-speed);
-            front_right.setPower(speed);
-        }
-        else if (gamepad1.right_stick_x < 0)
-        {
-            front_left.setPower(speed);
-            back_left.setPower(speed);
-            back_right.setPower(speed);
-            front_right.setPower(speed);
-        }
-        else if (gamepad1.right_stick_x > 0)
-        {
-            front_left.setPower(-speed);
-            back_left.setPower(-speed);
-            back_right.setPower(-speed);
-            front_right.setPower(-speed);
-        }
-        else {
-            front_left.setPower(0);
-            front_right.setPower(0);
-            back_left.setPower(0);
-            back_right.setPower(0);
-        }
+        if (gamepad2.right_trigger > 0) {
 
-        if (gamepad2.left_stick_y < 0)
-        {
-            base_motor.setPower(gamepad2.left_stick_y * 0.5);
-        }
-        else if (gamepad2.left_stick_y > 0)
-        {
-            base_motor.setPower(gamepad2.left_stick_y * 0.5);
-        }
-        else {
-            base_motor.setPower(0);
-        }
-
-        if (gamepad2.right_stick_y < 0) {
-            telemetry.addData("Status:", "Right stick up.");
             turn_servo.setPosition(1);
+            //turn_motor.setPower(-0.5);
 
-        } else if (gamepad2.right_stick_y > 0) {
-            telemetry.addData("Status:", "Right stick down.");
+        } else if (gamepad2.right_bumper) {
+
             turn_servo.setPosition(0);
+            //turn_motor.setPower(0.5);
 
         }
 
-        if (gamepad2.dpad_up) {
-            telemetry.addData("Status:", "Dpad up.");
-            claw_servo.setPosition(1);
-        } else if (gamepad2.dpad_down) {
-            telemetry.addData("Status:", "Dpad down.");
-            claw_servo.setPosition(0);
-        }
+//        if (gamepad2.right_trigger > 0) {
+//
+//            claw_servo.setPosition(1);
+//
+//        } else if (gamepad2.right_bumper) {
+//
+//            claw_servo.setPosition(0);
+//
+//        }
+//        else if (gamepad1.dpad_right)
+//        {
+//            back_right.setPower(speed);
+//            front_right.setPower(-speed);
+//        }
+//        else if (gamepad1.dpad_left)
+//        {
+//            back_right.setPower(-speed);
+//            front_right.setPower(speed);
+//        }
+//        else if (gamepad1.right_stick_x < 0)
+//        {
+//            front_left.setPower(speed);
+//            back_left.setPower(speed);
+//            back_right.setPower(speed);
+//            front_right.setPower(speed);
+//        }
+//        else if (gamepad1.right_stick_x > 0)
+//        {
+//            front_left.setPower(-speed);
+//            back_left.setPower(-speed);
+//            back_right.setPower(-speed);
+//            front_right.setPower(-speed);
+//        }
+//        else {
+//            front_left.setPower(0);
+//            front_right.setPower(0);
+//            back_left.setPower(0);
+//            back_right.setPower(0);
+//        }
 
     }
 

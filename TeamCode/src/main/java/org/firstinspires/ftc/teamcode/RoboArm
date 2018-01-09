@@ -38,13 +38,13 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.HardwarePushbot;
 import org.w3c.dom.ranges.Range;
-
+import java.lang.Math;
 /**
  * TeleOp Mode
  * <p>
  * Enables control of the robot via the gamepad
  */
-public class ArmCode extends OpMode {
+public class RoboArm extends OpMode {
 
 /*
 * Note: the configuration of the servos is such that
@@ -77,11 +77,15 @@ public class ArmCode extends OpMode {
 //double clawPosition;
 
 // amount to change the claw servo position b
+
     DcMotor motorRight;
     DcMotor motorLeft;
     Servo arm01;
     Servo arm02;
     Servo claw03;
+    Length len01;
+    Length len02;
+
 /**
  * Constructor
  */
@@ -232,35 +236,49 @@ public class ArmCode extends OpMode {
 * the robot more precisely at slower speeds.
 */
 
-    double scaleInput(double dVal) {
-        double[] scaleArray = {
-            0.0; 0.05; 0.09; 0.10; 0.12; 0.15; 0.18; 0.24;
-            0.30; 0.36; 0.43; 0.50; 0.60; 0.72; 0.85; 1.00;
-        };
 
-// get the corresponding index for the scaleInput array.
-        int index = (int) (dVal * 16.0);
+//    double scaleInput(double dVal) {
+//        double[] scaleArray = {
+//            0.0; 0.05; 0.09; 0.10; 0.12; 0.15; 0.18; 0.24;
+//            0.30; 0.36; 0.43; 0.50; 0.60; 0.72; 0.85; 1.00;
+//        };
+//
+//// get the corresponding index for the scaleInput array.
+//        int index = (int) (dVal * 16.0);
+//
+//// index should be positive.
+//        if (index < 0) {
+//            index = -index;
+//        }
+//
+//// index cannot exceed size of array minus 1.
+//        if (index > 16) {
+//            index = 16;
+//        }
+//
+//// get value from the array.
+//        double dScale = 0.0;
+//        if (dVal < 0) {
+//            dScale = -scaleArray[index];
+//        } else {
+//            dScale = scaleArray[index];
+//        }
+//
+//// return scaled value.
+//        return dScale;
+//    }
+ //public void fuction()
+ {
+          len01 = 1.00;
+          len02 = 1.00;
+     arm01 = x;
+     arm02 = y;
+     func angles = {x y};
+     distance = d;
+     d = Math.sqrt([x*x]+[y*y]);
+     n01 = math.Atan(y, x);
+     no2 = lawOfCosines(len01, len02, d);
 
-// index should be positive.
-        if (index < 0) {
-            index = -index;
-        }
-
-// index cannot exceed size of array minus 1.
-        if (index > 16) {
-            index = 16;
-        }
-
-// get value from the array.
-        double dScale = 0.0;
-        if (dVal < 0) {
-            dScale = -scaleArray[index];
-        } else {
-            dScale = scaleArray[index];
-        }
-
-// return scaled value.
-        return dScale;
-    }
+ }
 
 }

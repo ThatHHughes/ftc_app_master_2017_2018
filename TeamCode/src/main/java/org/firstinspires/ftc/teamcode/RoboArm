@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.HardwarePushbot;
 import org.w3c.dom.ranges.Range;
-import java.lang.Math;
+import java.lang.Math.*;
 /**
  * TeleOp Mode
  * <p>
@@ -73,6 +73,7 @@ public class RoboArm extends OpMode {
 // amount to change the arm servo position.
     double claw3Delta = 0.1;
 
+
 // position of the claw servo
 //double clawPosition;
 
@@ -83,8 +84,8 @@ public class RoboArm extends OpMode {
     Servo arm01;
     Servo arm02;
     Servo claw03;
-    Length len01;
-    Length len02;
+    double len01 = 15.00;
+    double len02 = 15.00;
 
 /**
  * Constructor
@@ -267,18 +268,28 @@ public class RoboArm extends OpMode {
 //// return scaled value.
 //        return dScale;
 //    }
- //public void fuction()
+    int x_ = 1;
+ public void move_equal(x)
  {
-          len01 = 1.00;
-          len02 = 1.00;
-     arm01 = x;
-     arm02 = y;
-     func angles = {x y};
-     distance = d;
-     d = Math.sqrt([x*x]+[y*y]);
-     n01 = math.Atan(y, x);
-     no2 = lawOfCosines(len01, len02, d);
+
+     int[] servo = {x; x-(x*2)};
+     //servo.setPosition(servo[0]);
+     //servo2.setPosition(servo[1]);
+    if ()
+ }
+
+//     n01 = math.Atan(y, x);
+//     no2 = math.lawOfCosines(len01, len02, d);
 
  }
+public void stop_move_eql()
+{
+//    servo.setPosition(.5);
+//    servo2.setPosition(.5);
+
+}
+
+
+
 
 }

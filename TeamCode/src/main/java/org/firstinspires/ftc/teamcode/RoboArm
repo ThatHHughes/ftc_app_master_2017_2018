@@ -83,7 +83,7 @@ public class RoboArm extends OpMode {
     DcMotor motorLeft;
     Servo arm01;
     Servo arm02;
-    Servo claw03;
+    //Servo claw03;
     double len01 = 15.00;
     double len02 = 15.00;
 
@@ -272,15 +272,15 @@ public class RoboArm extends OpMode {
  public void move_equal(x)
  {
 
-     int[] servo = {x; x-(x*2)};
+     int[] arm01 = {x; x-(x*2)};
      //servo.setPosition(servo[0]);
      //servo2.setPosition(servo[1]);
     
-    int y = 1
+    int y = 1;
 public void move_equal(y)
 {
     
-    int[] servo = {y; y-(y*2)};
+    int[] arm02 = {y; y-(y*2)};
     
 //     n01 = math.Atan(y, x);
 //     no2 = math.lawOfCosines(len01, len02, d);

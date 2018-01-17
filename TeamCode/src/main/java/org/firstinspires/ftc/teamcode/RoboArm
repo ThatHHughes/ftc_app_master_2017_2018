@@ -276,7 +276,12 @@ public class RoboArm extends OpMode {
      //servo.setPosition(servo[0]);
      //servo2.setPosition(servo[1]);
     
-
+    int y = 1
+public void move_equal(y)
+{
+    
+    int[] servo = {y; y-(y*2)};
+    
 //     n01 = math.Atan(y, x);
 //     no2 = math.lawOfCosines(len01, len02, d);
 

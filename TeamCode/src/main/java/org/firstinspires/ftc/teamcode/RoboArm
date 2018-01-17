@@ -268,15 +268,14 @@ public class RoboArm extends OpMode {
 //// return scaled value.
 //        return dScale;
 //    }
-    int x_ = 1;
+    int x = 1;
  public void move_equal(x)
  {
 
      int[] servo = {x; x-(x*2)};
      //servo.setPosition(servo[0]);
      //servo2.setPosition(servo[1]);
-    if ()
- }
+    
 
 //     n01 = math.Atan(y, x);
 //     no2 = math.lawOfCosines(len01, len02, d);

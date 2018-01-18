@@ -126,12 +126,19 @@ public class PushbotTeleopTank_Arm extends OpMode{
 
             turn_servo.setPosition(1);
             //turn_motor.setPower(-0.5);
-
-        } else if (gamepad2.right_bumper) {
+		x += .1;
+        } 
+	    else if (gamepad2.right_bumper) {
 
             turn_servo.setPosition(0);
             //turn_motor.setPower(0.5);
-
+		x -= .1;
+        }
+	     if (gamepad2.a) {
+            arm2Position -= arm2Delta;
+        }
+        if (gamepad2.x) {
+            claw3Position += claw3Delta;
         }
 
 //        if (gamepad2.right_trigger > 0) {

@@ -67,6 +67,7 @@ public class PushbotTeleopTank_Arm extends OpMode{
     Servo claw_servo;
 
     double maxSpeed = 0.5;
+    double x = 1.0; 
 
     public void init() {
 
@@ -79,7 +80,7 @@ public class PushbotTeleopTank_Arm extends OpMode{
       	back_right = hardwareMap.dcMotor.get("back_right");
         base_motor = hardwareMap.dcMotor.get("base_motor");
         base_servo = hardwareMap.servo.get("base_servo");
-	arm_servo = hardwareMap.servo.get9("arm_servo");
+	arm_servo = hardwareMap.servo.get("arm_servo");
 	claw_servo = hardwareMap.servo.get("claw_servo");
 	    
         //turn_motor = hardwareMap.dcMotor.get("turn_motor");

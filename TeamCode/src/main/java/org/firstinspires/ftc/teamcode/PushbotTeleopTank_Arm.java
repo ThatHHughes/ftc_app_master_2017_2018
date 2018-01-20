@@ -63,7 +63,7 @@ public class PushbotTeleopTank_Arm extends OpMode{
     DcMotor base_motor;
     //DcMotor turn_motor;
     Servo base_servo;
-    Servo arm_servo;
+    //Servo arm_servo;
     Servo claw_servo;
 
     double maxSpeed = 0.5;
@@ -80,7 +80,7 @@ public class PushbotTeleopTank_Arm extends OpMode{
       	back_right = hardwareMap.dcMotor.get("back_right");
         base_motor = hardwareMap.dcMotor.get("base_motor");
         base_servo = hardwareMap.servo.get("base_servo");
-	arm_servo = hardwareMap.servo.get("arm_servo");
+	//arm_servo = hardwareMap.servo.get("arm_servo");
 	claw_servo = hardwareMap.servo.get("claw_servo");
 	    
         //turn_motor = hardwareMap.dcMotor.get("turn_motor");
@@ -137,24 +137,26 @@ public class PushbotTeleopTank_Arm extends OpMode{
 
             base_servo.setPosition(0);
             //turn_motor.setPower(0.5);
-		x -= .1;
+		x -= .1;	
         }
 	     if (gamepad2.a) {
-            arm2Position -= arm2Delta;
+            claw_servo -= 0.1;
         }
+	    if (gamepad2.y) {
+	    claw_servo += 0.1;
 	    
-	    if (gamepad2.left_trigger > 0) {
+// 	    if (gamepad2.left_trigger < 0) {
 
-            arm_servo.setPosition(1);
-            //turn_motor.setPower(-0.5);
-		x += .1;
-        } 
-	    else if (gamepad2.left_bumper) {
+//             arm_servo.setPosition(1);
+//             //turn_motor.setPower(-0.5);
+// 		x += .1;
+//         } 
+// 	    else if (gamepad2.left_bumper) {
 
-            base_servo.setPosition(0);
+//             base_servo.setPosition(0);
             //turn_motor.setPower(0.5);
 		x -= .1;
-        }
+       
 // 	     if (gamepad2.a) {
 //             arm2Position -= arm2Delta;
 //         }
@@ -162,15 +164,17 @@ public class PushbotTeleopTank_Arm extends OpMode{
         if (gamepad2.x) {
             claw3Position += claw3Delta;
         }
-	if (base_servo += .1) {
-		arm_servo -= .1;
-	}
+// 	if (base_servo += .1) {
+// 		arm_servo -= .1;
+// 	}
+		    
+// 	if (	    
 //        if (gamepad2.x) {
 //
 //            base_servo = .5;
 //
 // 	int x = 1;
-// 	 public void move_equal(x)
+// 	 public void move_equa 9	1`(x)
 // 	 {
 
 // 	     int[] base_servo = {x; x-(x*2)};

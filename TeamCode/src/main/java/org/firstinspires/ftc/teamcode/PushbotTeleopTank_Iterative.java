@@ -63,8 +63,9 @@ public class PushbotTeleopTank_Iterative extends OpMode{
 
     DcMotor base_motor;
     //DcMotor turn_motor;
-    Servo turn_servo;
-    Servo claw_servo;
+    //Servo base_servo;
+    //Servo turn_servo;
+    //Servo claw_servo;
 
     DcMotor arm;
     Servo arm_1;
@@ -80,11 +81,7 @@ public class PushbotTeleopTank_Iterative extends OpMode{
       	front_right = hardwareMap.dcMotor.get("front_right");
       	back_left = hardwareMap.dcMotor.get("back_left");
       	back_right = hardwareMap.dcMotor.get("back_right");
-        base_motor = hardwareMap.dcMotor.get("base_motor");
-        turn_servo = hardwareMap.servo.get("turn_servo");
-        claw_servo = hardwareMap.servo.get("claw_servo");
-//        test_1 = hardwareMap.dcMotor.get("test_1");
-//        test_2 = hardwareMap.dcMotor.get("test_2");
+        //base_motor = hardwareMap.dcMotor.get("base_motor");
         telemetry.addData("Status:", "hwMap is good.");
 
     }
@@ -119,22 +116,24 @@ public class PushbotTeleopTank_Iterative extends OpMode{
         // To turn left: (bl- br- fl- fr-)
         // To turn right: (bl+ br+ fl+ fr+)
 
-        if (gamepad1.dpad_down)
+        //Right = Front
+
+        if (gamepad1.dpad_right) //To right from down
         {
             front_left.setPower(speed);
             back_left.setPower(-speed);
         }
-        else if (gamepad1.dpad_up)
+        else if (gamepad1.dpad_left) //To left from up
         {
             front_left.setPower(-speed);
             back_left.setPower(speed);
         }
-        else if (gamepad1.dpad_right)
+        else if (gamepad1.dpad_up) //To up from right
         {
             back_right.setPower(speed);
             front_right.setPower(-speed);
         }
-        else if (gamepad1.dpad_left)
+        else if (gamepad1.dpad_down) //To down from left
         {
             back_right.setPower(-speed);
             front_right.setPower(speed);
@@ -160,35 +159,14 @@ public class PushbotTeleopTank_Iterative extends OpMode{
             back_right.setPower(0);
         }
 
-        if (gamepad2.left_stick_y < 0)
-        {
-            base_motor.setPower(gamepad2.left_stick_y * 0.5);
-        }
-        else if (gamepad2.left_stick_y > 0)
-        {
-            base_motor.setPower(gamepad2.left_stick_y * 0.5);
-        }
-        else {
+        if (gamepad1.right_trigger > 0) {
+            base_motor.setPower(-0.3);
+        } else if (gamepad1.right_bumper) {
+            base_motor.setPower(0.3);
+        } else {
             base_motor.setPower(0);
         }
 
-        if (gamepad2.right_stick_y < 0) {
-            telemetry.addData("Status:", "Right stick up.");
-            turn_servo.setPosition(1);
-
-        } else if (gamepad2.right_stick_y > 0) {
-            telemetry.addData("Status:", "Right stick down.");
-            turn_servo.setPosition(0);
-
-        }
-
-        if (gamepad2.dpad_up) {
-            telemetry.addData("Status:", "Dpad up.");
-            claw_servo.setPosition(1);
-        } else if (gamepad2.dpad_down) {
-            telemetry.addData("Status:", "Dpad down.");
-            claw_servo.setPosition(0);
-        }
 
     }
 

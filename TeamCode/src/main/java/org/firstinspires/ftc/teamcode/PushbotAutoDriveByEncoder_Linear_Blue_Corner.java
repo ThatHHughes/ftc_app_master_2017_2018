@@ -52,9 +52,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Pushbot: Auto Drive By Encoder Red", group="Pushbot")
+@Autonomous(name="Pushbot: Auto Drive By Encoder Blue Corner", group="Pushbot")
 
-public class PushbotAutoDriveByEncoder_Linear_Red extends LinearOpMode {
+public class PushbotAutoDriveByEncoder_Linear_Blue_Corner extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
@@ -126,9 +126,9 @@ public class PushbotAutoDriveByEncoder_Linear_Red extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         telemetry.addData("Path 1 Running", "");
-          encoderDrive(DRIVE_SPEED,  60,  -60, -60, 60, 1000, "right");  // S1: Forward 47 Inches with 5 Sec timeout
-          encoderDrive(DRIVE_SPEED,  12,  12, -12, -12, 1000, "backward");
-//  encoderDrive(DRIVE_SPEED, 0, 15, 0, 15, 1000);
+          encoderDrive(DRIVE_SPEED,  60,  60, 60, -60, 1000, "left");  // S1: Forward 47 Inches with 5 Sec timeout
+          encoderDrive(DRIVE_SPEED,  -12,  12, 12, 12, 1000, "forward");
+//        encoderDrive(DRIVE_SPEED, 0, 15, 0, 15, 1000);
 //        telemetry.addData("Path 1 ", "Complete");
 //        telemetry.addData("Path 2 Running", "");
 //        encoderDrive(TURN_SPEED,   -12, -12, -12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout

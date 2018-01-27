@@ -55,13 +55,14 @@ public class PushbotTeleopTank_Arm extends OpMode{
 
     /* Declare OpMode members. */
     HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
-  	DcMotor front_left;
-  	DcMotor front_right;
-  	DcMotor back_left;
-  	DcMotor back_right;
+//    DcMotor front_left;
+//    DcMotor front_right;
+//    DcMotor back_left;
+//    DcMotor back_right;
     DcMotor arm;
     DcMotor base_motor;
     //DcMotor turn_motor;
+    Servo base_servo;
     Servo turn_servo;
     Servo claw_servo;
 
@@ -69,15 +70,18 @@ public class PushbotTeleopTank_Arm extends OpMode{
 
     public void init() {
 
-      
+
         robot.init(hardwareMap);
-//        claw_servo = hardwareMap.servo.get("claw_servo");
-		front_left = hardwareMap.dcMotor.get("front_left");
-      	front_right = hardwareMap.dcMotor.get("front_right");
-      	back_left = hardwareMap.dcMotor.get("back_left");
-      	back_right = hardwareMap.dcMotor.get("back_right");
-        base_motor = hardwareMap.dcMotor.get("base_motor");
+
+//        front_left = hardwareMap.dcMotor.get("front_left");
+//        front_right = hardwareMap.dcMotor.get("front_right");
+//        back_left = hardwareMap.dcMotor.get("back_left");
+//        back_right = hardwareMap.dcMotor.get("back_right");
+        //base_motor = hardwareMap.dcMotor.get("base_motor");
+        base_servo = hardwareMap.servo.get("base_servo");
         turn_servo = hardwareMap.servo.get("turn_servo");
+        //claw_servo = hardwareMap.servo.get("claw_servo");
+
         //turn_motor = hardwareMap.dcMotor.get("turn_motor");
 //        test_1 = hardwareMap.dcMotor.get("test_1");
 //        test_2 = hardwareMap.dcMotor.get("test_2");
@@ -94,10 +98,10 @@ public class PushbotTeleopTank_Arm extends OpMode{
     public void start() {
 
         telemetry.addData("Status:", "Started.");
-        front_left.setPower(0);
-        front_right.setPower(0);
-        back_left.setPower(0);
-        back_right.setPower(0);
+//        front_left.setPower(0);
+//        front_right.setPower(0);
+//        back_left.setPower(0);
+//        back_right.setPower(0);
     }
 
 
@@ -114,35 +118,81 @@ public class PushbotTeleopTank_Arm extends OpMode{
         // To turn left: (bl- br- fl- fr-)
         // To turn right: (bl+ br+ fl+ fr+)
 
-        if (gamepad2.dpad_down)
-        {
-            base_motor.setPower(-0.4);
-        }
-        else if (gamepad2.dpad_up)
-        {
-            base_motor.setPower(0.4);
-        }
+//        if (gamepad2.dpad_down)
+//        {
+//            base_motor.setPower(-0.4);
+//        }
+//        else if (gamepad2.dpad_up)
+//        {
+//            base_motor.setPower(0.4);
+//        }
         if (gamepad2.right_trigger > 0) {
+
+            base_servo.setPosition(1);
+            //turn_motor.setPower(-0.5);
+
+        }
+        else if (gamepad2.right_bumper) {
+
+            base_servo.setPosition(0);
+            //turn_motor.setPower(0.5);
+
+        } else {
+            base_servo.setPosition(0.5);
+        }
+//        if (gamepad2.a) {
+//            arm_servo -= arm2Delta;
+//        }
+
+        if (gamepad2.left_trigger > 0.5) {
 
             turn_servo.setPosition(1);
             //turn_motor.setPower(-0.5);
-
-        } else if (gamepad2.right_bumper) {
+        }
+        else if (gamepad2.left_bumper) {
 
             turn_servo.setPosition(0);
             //turn_motor.setPower(0.5);
 
         }
+// 	     if (gamepad2.a) {
+//             arm2Position -= arm2Delta;
+//         }
 
-//        if (gamepad2.right_trigger > 0) {
-//
-//            claw_servo.setPosition(1);
-//
-//        } else if (gamepad2.right_bumper) {
-//
-//            claw_servo.setPosition(0);
-//
+//        if (gamepad2.x) {
+//            claw3Position += claw3Delta;
 //        }
+//        if (base_servo += .1) {
+//            arm_servo -= .1;
+//        }
+//        if (gamepad2.x) {
+//
+//            base_servo = .5;
+//
+// 	int x = 1;
+// 	 public void move_equal(x)
+// 	 {
+
+// 	     int[] base_servo = {x; x-(x*2)};
+// 	     //servo.setPosition(servo[0]);
+// 	     //servo2.setPosition(servo[1]);
+
+// 	    int y = 1;
+// 	public void move_equal(y)
+// 	{
+
+// 	    int[] arm_servo = {y; y-(y*2)};
+
+// 	//     n01 = math.Atan(y, x);
+// 	//     no2 = math.lawOfCosines(len01, len02, d);
+
+// 	 }
+// 	public void stop_move_eql()
+// 	{
+// 	//    servo.setPosition(.5);
+// 	//    servo2.setPosition(.5);
+
+// 	}
 //        else if (gamepad1.dpad_right)
 //        {
 //            back_right.setPower(speed);
@@ -182,6 +232,6 @@ public class PushbotTeleopTank_Arm extends OpMode{
      */
     @Override
     public void stop() {
-      telemetry.addData("Status:", "Stopped.");
+        telemetry.addData("Status:", "Stopped.");
     }
 }
